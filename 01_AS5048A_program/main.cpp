@@ -1,17 +1,24 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-#include <wiringPiSPI.h>
-#include <wiringPi.h>
 
 #include "./include/AS5048A.h"
+
+using namespace std;
 
 AS5048A angleSensor(24, true);
 
 int main(void)
 {
-    std::cout << "Hello world" << std::endl;
+    angleSensor.begin();
+    cout << "Hello world" << endl;
+    
+
+    while(1)
+    {
+        uint16_t val = angleSensor.getRawRotation();
+        cout << "val(bin)=" << bitset<16>(val) << endl;
+        cout << "val(int)=" << static_cast<int>(val) << endl;
+
+        sleep(1);
+    };
+
     return 0;
 }

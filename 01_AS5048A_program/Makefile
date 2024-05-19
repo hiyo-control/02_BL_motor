@@ -1,6 +1,6 @@
 COMPILER = g++
 CFLAGS = -Wall
-LDFLAGS = -lm
+LDFLAGS = -lm -lwiringPi
 
 BUILD_DIR = build
 
