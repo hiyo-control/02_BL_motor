@@ -37,6 +37,10 @@ public:
 	AS5048A(uint8_t cs, bool debug);
 	void begin();
 	int16_t getRawRotation();
+	int16_t getRotation();
+	double getRotationInDegrees();
 
+	uint16_t getState();
+	void getDiagnostic();
 };
 #endif

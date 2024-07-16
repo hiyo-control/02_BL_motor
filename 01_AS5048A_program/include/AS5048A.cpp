@@ -1,6 +1,9 @@
 #include "AS5048A.h"
 
 static const uint16_t AS5048A_ANGLE = 0x3FFF;
+static const uint16_t AS5048A_DIAG_AGC = 0x3FFD;
+
+static const double AS5048A_MAX_VALUE = 8191.0;
 
 using namespace std;
 
@@ -12,8 +15,6 @@ AS5048A::AS5048A(uint8_t cs, bool debug)
 	this->errorFlag = false;
 	this->ocfFlag = false;
 	this->position = 0;
-
-	//std::cout << +this->cs << std::endl;
 }
 
 void AS5048A::begin()
@@ -32,7 +33,7 @@ void AS5048A::begin()
 	wiringPiSetupGpio();
 
 	pinMode(this->cs, OUTPUT);
-	digitalWrite(this->cs, HIGH);
+	digitalWrite(this->cs, 1);
 }
 
 uint16_t AS5048A::spiCalcEvenParity(uint16_t value)
@@ -81,8 +82,8 @@ uint16_t AS5048A::read(uint16_t registerAddress)
 	};
 	digitalWrite(this->cs, HIGH);
 
-	uint16_t response_upper = (static_cast<uint16_t>(dataRW[1] << 8));
-	uint16_t response_lower = (static_cast<uint16_t>(dataRW[0]));
+	uint16_t response_upper = (static_cast<uint16_t>(dataRW[0] << 8));
+	uint16_t response_lower = (static_cast<uint16_t>(dataRW[1]));
 	uint16_t response       = response_upper | response_lower;
 
 	if (this->debug)
@@ -115,4 +116,38 @@ uint16_t AS5048A::read(uint16_t registerAddress)
 int16_t AS5048A::getRawRotation()
 {
 	return AS5048A::read(AS5048A_ANGLE);
+}
+
+int16_t AS5048A::getRotation()
+{
+	uint16_t data;
+	int16_t rotation;
+
+	data = AS5048A::getRawRotation();
+
+	rotation = static_cast<int16_t>(data) - static_cast<int16_t>(this->position);
+	if(rotation > AS5048A_MAX_VALUE)
+	{
+		rotation = -((0x3FFF)-rotation);
+	}
+
+	return rotation;
+}
+
+double AS5048A::getRotationInDegrees()
+{
+	int16_t rotation = getRotation();
+	double degrees = 360.0 * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
+	return degrees;
+}
+
+void AS5048A::getDiagnostic()
+{
+	uint16_t data = AS5048A::getState();
+	cout << "diagnostic : " << data << endl;
+}
+
+uint16_t AS5048A::getState()
+{
+	return AS5048A::read(AS5048A_DIAG_AGC);
 }

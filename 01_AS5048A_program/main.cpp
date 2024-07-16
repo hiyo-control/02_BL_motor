@@ -10,12 +10,10 @@ int main(void)
     angleSensor.begin();
     cout << "Hello world" << endl;
     
-
     while(1)
     {
-        uint16_t val = angleSensor.getRawRotation();
-        cout << "val(bin)=" << bitset<16>(val) << endl;
-        cout << "val(int)=" << static_cast<int>(val) << endl;
+        double deg = angleSensor.getRotationInDegrees();
+        cout << "degree=" << deg << endl;
 
         sleep(1);
     };
