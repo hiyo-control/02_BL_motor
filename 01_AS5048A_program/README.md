@@ -1,4 +1,4 @@
-# 02_BL_motor
+# 01_AS5048A_program
 ## 20240519
 The program can communicate AS5048A by SPI
 
