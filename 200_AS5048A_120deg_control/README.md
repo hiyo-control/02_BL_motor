@@ -1,9 +1,5 @@
-# 01_AS5048A_program
-## 20240519
-The program can communicate AS5048A by SPI
-
-## 20240506
-only compile
-
-## 20240717
-It can get motor angle using AS5048A by this program
+# 200_AS5048A?120deg_control
+## 20240816
+The program can
+- measure motor angle by AS5048A
+- rotate motor by 120deg control
