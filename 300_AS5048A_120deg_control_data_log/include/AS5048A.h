@@ -2,6 +2,7 @@
 #define as5048_h
 
 #include <iostream>
+#include <cmath>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -23,6 +24,7 @@ private:
 
 	uint16_t spiCalcEvenParity(uint16_t);
 	uint16_t read(uint16_t registerAddress);
+	double calc_mod(double a, double b);
 
 public:
 	/*
@@ -36,9 +38,14 @@ public:
 	/* Constructor */
 	AS5048A(uint8_t cs, bool debug);
 	void begin();
+
 	int16_t getRawRotation();
 	int16_t getRotation();
-	double getRotationInDegrees();
+	double getCompRotation();
+	double getElecCompRotation();
+
+	double getMechAngleIndeg();
+	double getMechCompAngleIndeg();
 
 	uint16_t getState();
 	void getDiagnostic();

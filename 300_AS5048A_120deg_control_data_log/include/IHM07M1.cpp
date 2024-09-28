@@ -2,6 +2,7 @@
 
 // Define motor and driver parameter
 static const int F_PWM = 15000;
+//static const int F_PWM = 1500;
 static const int MOD_F = 400000;
 
 // Define GIO pins

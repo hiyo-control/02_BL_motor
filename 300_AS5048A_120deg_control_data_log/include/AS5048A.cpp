@@ -1,9 +1,14 @@
 #include "AS5048A.h"
 
-static const uint16_t AS5048A_ANGLE = 0x3FFF;
-static const uint16_t AS5048A_DIAG_AGC = 0x3FFD;
+// AS5048A code
+static const uint16_t AS5048A_ANGLE_CODE = 0x3FFF;
+static const uint16_t AS5048A_DIAG_AGC_CODE = 0x3FFD;
 
+// AS5048A parameter
 static const double AS5048A_MAX_VALUE = 8191.0;
+static const double AS508A_ELEC_MAX_VALUE = 2306.0;
+static const double AS5048A_RESOLUTION = 16384.0; // 14bit
+static const double AS5048A_ANGLE_OFFSET = 1785.5;
 
 using namespace std;
 
@@ -115,7 +120,7 @@ uint16_t AS5048A::read(uint16_t registerAddress)
 
 int16_t AS5048A::getRawRotation()
 {
-	return AS5048A::read(AS5048A_ANGLE);
+	return AS5048A::read(AS5048A_ANGLE_CODE);
 }
 
 int16_t AS5048A::getRotation()
@@ -134,9 +139,32 @@ int16_t AS5048A::getRotation()
 	return rotation;
 }
 
-double AS5048A::getRotationInDegrees()
+double AS5048A::getCompRotation()
+{
+	double value_buf = getRawRotation() - AS5048A_ANGLE_OFFSET;
+	double value = calc_mod(value_buf, AS5048A_RESOLUTION);
+
+	return value;
+}
+
+double AS5048A::getElecCompRotation()
+{
+	double value_buf = getCompRotation();
+	double value = calc_mod(value_buf, AS508A_ELEC_MAX_VALUE);
+
+	return value;
+}
+
+double AS5048A::getMechAngleIndeg()
 {
 	int16_t rotation = getRotation();
+	double degrees = 360.0 * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
+	return degrees;
+}
+
+double AS5048A::getMechCompAngleIndeg()
+{
+	int16_t rotation = getCompRotation();
 	double degrees = 360.0 * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
 	return degrees;
 }
@@ -149,5 +177,15 @@ void AS5048A::getDiagnostic()
 
 uint16_t AS5048A::getState()
 {
-	return AS5048A::read(AS5048A_DIAG_AGC);
+	return AS5048A::read(AS5048A_DIAG_AGC_CODE);
+}
+
+double AS5048A::calc_mod(double a, double b)
+{
+	double result = fmod(a, b);
+	if(result < 0)
+	{
+		result += abs(b);
+	}
+	return result;
 }

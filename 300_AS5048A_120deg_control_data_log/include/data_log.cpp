@@ -16,13 +16,13 @@ void data_log::begin()
     {
         cerr << "file can not open" << endl;
     }
-    file << "No, angle [deg]\n";
+    file << "No, RawRotation, Rotation, CompRotation, ElecCompRotation, Mech_deg, Mech_Comp_deg\n";
 
 }
 
-void data_log::angle_record(int counter, double deg)
+void data_log::angle_record(int counter, int16_t RawRotation, int16_t Rotation, double CompRotation, double ElecCompRotation, double Mech_deg, double Mech_Comp_deg)
 {
-    file << counter << "," << deg << "\n";
+    file << counter << "," << RawRotation << "," << Rotation << "," << CompRotation << "," << ElecCompRotation << "," << Mech_deg << "," << Mech_Comp_deg << "\n";
 }
 
 void data_log::close()

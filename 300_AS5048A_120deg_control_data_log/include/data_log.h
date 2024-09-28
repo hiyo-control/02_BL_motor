@@ -14,7 +14,7 @@ private:
 public:
     data_log(bool debug);
     void begin();
-    void angle_record(int counter, double deg);
+    void angle_record(int counter, int16_t RawRotation, int16_t Rotation, double CompRotation, double ElecCompRotation, double Mech_deg, double Mech_Comp_deg);
     void close();
 };
 
