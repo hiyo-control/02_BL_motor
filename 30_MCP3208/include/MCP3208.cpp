@@ -1,5 +1,13 @@
 #include "MCP3208.h"
 
+static const int mcp3208_Uch = 0;
+static const int mcp3208_Vch = 1;
+static const int mcp3208_Wch = 2;
+
+static const double Uresistance = 220.0;
+static const double Vresistance = 220.0;
+static const double Wresistance = 220.0;
+
 using namespace std;
 
 /* Constructor */
@@ -59,4 +67,28 @@ double MCP3208::getVoltage(int mcp3208_ch)
     double voltage = (adcValue * this->Vref) / 4096.0;
 
     return voltage;
+}
+
+double MCP3208::getUCurrent()
+{
+    double voltage = getVoltage(mcp3208_Uch);
+    double current = voltage / Uresistance;
+
+    return current;
+}
+
+double MCP3208::getVCurrent()
+{
+    double voltage = getVoltage(mcp3208_Vch);
+    double current = voltage / Vresistance;
+    
+    return current;
+}
+
+double MCP3208::getWCurrent()
+{
+    double voltage = getVoltage(mcp3208_Wch);
+    double current = voltage / Wresistance;
+    
+    return current;
 }

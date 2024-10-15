@@ -1,28 +1,39 @@
+#include <thread>
+#include <chrono>
 #include "./include/MCP3208.h"
 
 using namespace std;
 
 uint8_t cs_ch = 26;
 double Vref = 3.28;
-int mcp3208_ch = 0; // 測定するMCP3208のチャンネル
 
-MCP3208 currentSensor(cs_ch, Vref);
+MCP3208 getCurrent(cs_ch, Vref);
 
-int main(void)
+void getUVWCurrent()
 {
-    currentSensor.begin();
+    while(true)
+    {
+        this_thread::sleep_for(chrono::seconds(1));
+
+        double UCurrent = getCurrent.getUCurrent();
+        double VCurrent = getCurrent.getVCurrent();
+        double WCurrent = getCurrent.getWCurrent();
+
+        cout << "U-phase current : " << UCurrent << endl;
+        cout << "V-phase current : " << VCurrent << endl;
+        cout << "W-phase current : " << WCurrent << endl;
+        
+    }
+}
+
+int main()
+{
     cout << "Hello world" << endl;
 
-    while(1)
-    {
-        int adcValue = currentSensor.readADC(mcp3208_ch);
-        double voltage = currentSensor.getVoltage(mcp3208_ch);
+    getCurrent.begin();
 
-        std::cout << "ADC Value: " << adcValue << " | Voltage: " << voltage << " V" << std::endl;
-        sleep(1); // 1秒待機
-
-    }
-    return 0;
+    thread getCurrentInterrupt(getUVWCurrent);
+    getCurrentInterrupt.join();
 }
 
 
