@@ -6,6 +6,14 @@
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
 
+// AS5048A code
+static const uint16_t AS5048A_ANGLE_CODE = 0x3FFF;
+static const uint16_t AS5048A_DIAG_AGC_CODE = 0x3FFD;
+
+// AS5048A parameter
+static const double AS5048A_MAX_VALUE = 8191.0;
+static const double PI = 3.141592;
+
 class AS5048A
 {
 private:

@@ -1,13 +1,5 @@
 #include "AS5048A.h"
 
-// AS5048A code
-static const uint16_t AS5048A_ANGLE_CODE = 0x3FFF;
-static const uint16_t AS5048A_DIAG_AGC_CODE = 0x3FFD;
-
-// AS5048A parameter
-static const double AS5048A_MAX_VALUE = 8191.0;
-static const double PI = 3.141592;
-
 using namespace std;
 
 // Constructor
@@ -17,6 +9,7 @@ AS5048A::AS5048A(uint8_t cs, bool debug)
 	this->debug = debug;
 	this->errorFlag = false;
 	this->ocfFlag = false;
+	this->Pn = 14.0; // Number of Pole of BL motor
 }
 
 void AS5048A::begin()
@@ -36,6 +29,8 @@ void AS5048A::begin()
 
 	pinMode(this->cs, OUTPUT);
 	digitalWrite(this->cs, 1);
+
+	rotation_prev = getRotation();
 }
 
 uint16_t AS5048A::spiCalcEvenParity(uint16_t value)
@@ -152,6 +147,7 @@ double AS5048A::getMechAngleInrad()
 	return radian;
 }
 
+/*
 double AS5048A::getMechCumulativeAngleIndeg()
 {
 	int16_t rotation = getRotation();
@@ -174,6 +170,7 @@ double AS5048A::getMechCumulativeAngleIndeg()
 
 	return degrees;
 }
+*/
 
 double AS5048A::getElecAngleInrad()
 {
