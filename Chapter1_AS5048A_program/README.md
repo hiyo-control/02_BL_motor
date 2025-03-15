@@ -1,6 +1,13 @@
-# 10_AS5048A_program
-## 20240506
-- No comment
-## 20240717
-- AS5048A test program
-- Motor angle can be measured by the program
+# Chapter 1 AS5048A program
+## How to build program
+1. Open "terminal"
+2. Enter "make clean"
+3. Enter "make"
+
+## How to execute exe-file
+1. Open "terminal"
+2. Enter "sudo ./build/main"
+3. Enter your password if it is needed
+
+## Qiita link
+xxx
