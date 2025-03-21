@@ -30,7 +30,8 @@ void AS5048A::begin()
 	pinMode(this->cs, OUTPUT);
 	digitalWrite(this->cs, 1);
 
-	rotation_prev = getRotation();
+	rotation_initial = getRawRotation();
+	rotation_prev = rotation_initial;
 }
 
 uint16_t AS5048A::spiCalcEvenParity(uint16_t value)
@@ -115,62 +116,48 @@ int16_t AS5048A::getRawRotation()
 	return AS5048A::read(AS5048A_ANGLE_CODE);
 }
 
-int16_t AS5048A::getRotation()
-{
-	uint16_t data;
-	int16_t rotation;
-
-	data = AS5048A::getRawRotation();
-
-	rotation = static_cast<int16_t>(data);
-	if(rotation > AS5048A_MAX_VALUE)
-	{
-		rotation = -((0x3FFF)-rotation);
-	}
-
-	return rotation;
-}
-
 double AS5048A::getMechAngleIndeg()
 {
-	int16_t rotation = getRotation();
-	double degrees = 360.0 * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
+	int16_t rotation_buf = getRawRotation();
+	double rotation      = static_cast<double>(rotation_buf);
+	double degrees       = AS5048A_resolution_deg * rotation;
+
 	return degrees;
 }
 
 double AS5048A::getMechAngleInrad()
 {
-	int16_t rotation_buf = getRotation();
+	int16_t rotation_buf = getRawRotation();
 	double rotation      = static_cast<double>(rotation_buf);
+	double radian        = AS5048A_resolution_rad * rotation;
 
-	double radian = 2.0*PI * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
 	return radian;
 }
 
-/*
+
 double AS5048A::getMechCumulativeAngleIndeg()
 {
-	int16_t rotation = getRotation();
+	int16_t rotation = getRawRotation();
 	int16_t rotation_diff = rotation - rotation_prev;
 
 	// Count round up
-	if (rotation_diff > AS5048A_MAX_VALUE)
+	if (rotation_diff > 0.5*AS5048A_MAX_VALUE)
 	{
 		round_cnt--;
 	}
-	else if (rotation_diff < -AS5048A_MAX_VALUE)
+	else if (rotation_diff < -0.5*AS5048A_MAX_VALUE)
 	{
 		round_cnt++;
 	}
 
 	rotation_prev = rotation;
 
-	double degrees_buf = 360.0 * (rotation + AS5048A_MAX_VALUE) / (AS5048A_MAX_VALUE * 2.0);
-	double degrees = degrees_buf + 360.0*round_cnt;
+	double degrees_buf = AS5048A_resolution_deg * (rotation - rotation_initial);
+	double degrees     = degrees_buf + 360.0*round_cnt;
 
 	return degrees;
 }
-*/
+
 
 double AS5048A::getElecAngleInrad()
 {
@@ -182,6 +169,6 @@ double AS5048A::getElecAngleInrad()
 
 void AS5048A::getDiagnostic()
 {
-	uint16_t data = AS5048A::read(AS5048A_DIAG_AGC_CODE);
+	uint16_t data = AS5048A::read(AS5048A_DIAG_CODE);
 	cout << "diagnostic : " << data << endl;
 }

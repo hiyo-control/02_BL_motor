@@ -8,11 +8,13 @@
 
 // AS5048A code
 static const uint16_t AS5048A_ANGLE_CODE = 0x3FFF;
-static const uint16_t AS5048A_DIAG_AGC_CODE = 0x3FFD;
+static const uint16_t AS5048A_DIAG_CODE  = 0x3FFD;
 
 // AS5048A parameter
-static const double AS5048A_MAX_VALUE = 8191.0;
 static const double PI = 3.141592;
+static const double AS5048A_MAX_VALUE      = 16384.0      ; // 2^14
+static const double AS5048A_resolution_deg = 0.0219       ; // deg/LSB
+static const double AS5048A_resolution_rad = 0.0219*PI/180; // rad/LSB
 
 class AS5048A
 {
@@ -24,12 +26,12 @@ private:
 	int channel;
 	double Pn;
 	int16_t rotation_prev = 0;
+	int16_t rotation_initial = 0;
 	int round_cnt = 0;
 
 	uint16_t spiCalcEvenParity(uint16_t);
 	uint16_t read(uint16_t registerAddress);
 	int16_t getRawRotation();
-	int16_t getRotation();
 
 public:
 	/* Constructor */
