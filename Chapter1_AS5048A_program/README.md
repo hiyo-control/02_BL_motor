@@ -10,4 +10,7 @@
 3. Enter your password if it is needed
 
 ## Qiita link
-xxx
+https://qiita.com/hiyo_control/items/66affbccbd3b8dbe3892
+
+## Reference program
+https://github.com/eborghi10/AS5048A/tree/master/src

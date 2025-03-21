@@ -14,8 +14,8 @@ void getMotorAngle()
     {
         this_thread::sleep_for(chrono::milliseconds(100));
 
-        //double MotorAngle = angleSensor.getMechAngleIndeg();
-        double MotorAngle = angleSensor.getMechCumulativeAngleIndeg();
+        double MotorAngle = angleSensor.getMechAngleIndeg();
+        //double MotorAngle = angleSensor.getMechCumulativeAngleIndeg();
         cout << "Motor Angle = " << MotorAngle << " [deg]" << endl;
     }
 }
