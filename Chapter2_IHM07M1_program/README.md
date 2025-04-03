@@ -1,4 +1,16 @@
-# 20_IHM07M1_(120deg_Control)
-## 20240729
-- IHM07M1 test program
-- The motor can be rotate by the program by "120deg control"
+# Chapter 1 AS5048A program
+## How to build program
+1. Open "terminal"
+2. Enter "make clean"
+3. Enter "make"
+
+## How to execute exe-file
+1. Open "terminal"
+2. Enter "sudo ./build/main"
+3. Enter your password if it is needed
+
+## Qiita link
+--
+
+## Reference program
+https://github.com/RR-Inyo/bldc6p
