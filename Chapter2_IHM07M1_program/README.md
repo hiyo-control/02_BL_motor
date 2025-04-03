@@ -1,4 +1,4 @@
-# Chapter 1 AS5048A program
+# Chapter 2 IHM07M1 PWM output program
 ## How to build program
 1. Open "terminal"
 2. Enter "make clean"
