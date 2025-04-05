@@ -9,8 +9,7 @@
 using namespace std;
 
 // Define motor and driver parameter
-//static const int F_PWM = 95000; // 95kHz
-static const int F_PWM = 10000; // 10kHz
+static const int F_PWM = 95000; // 95kHz
 
 static const int MOD_F = 500000; // 50%
 
