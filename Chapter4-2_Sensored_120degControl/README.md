@@ -1,4 +1,4 @@
-# Chapter 2 IHM07M1 PWM output program
+# Chapter 4-2 Sensored 120deg Cotnrol program
 ## How to build program
 1. Open "terminal"
 2. Enter "make clean"
@@ -10,8 +10,7 @@
 3. Enter your password if it is needed
 
 ## Qiita link
-
-## Youtube link
+https://qiita.com/hiyo_control/items/b629c0979d1acaa26784
 
 ## Reference program
 - https://github.com/eborghi10/AS5048A/tree/master/src
